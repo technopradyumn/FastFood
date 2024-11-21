@@ -1,7 +1,3 @@
-Here’s an updated version of your GitHub description with larger titles and subtitles for better readability:
-
----
-
 # FastFood App
 
 **FastFood** is an Android-based mobile application designed to provide users with a seamless and enjoyable food ordering experience. The app is built with modern tools and technologies, ensuring high performance and a user-friendly interface. Whether you're in the mood for a quick meal or planning a family feast, **FastFood** offers a variety of food options from your favorite restaurants. 
