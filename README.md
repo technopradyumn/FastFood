@@ -18,7 +18,7 @@
 - **Jetpack Compose**: For modern and responsive UI development.
 - **Navigation Component**: To handle seamless screen transitions.
 - **Firebase Authentication**: For user sign-up and login functionality.
-- **Jetpack Hilt**: For dependency injection, ensuring clean and manageable code.
+- **MVVM Architecture**: Ensures clean separation of concerns and makes the code easier to manage and test.
 - **Firestore Database**: For real-time storage of user data and order information.
 - **Material3**: To provide a clean and intuitive design using Material Design components.
   
