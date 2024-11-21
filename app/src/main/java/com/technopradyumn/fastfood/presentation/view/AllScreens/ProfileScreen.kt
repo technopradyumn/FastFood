@@ -28,10 +28,8 @@ import com.technopradyumn.fastfood.presentation.view.navigation.Screen
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(
-    onLogout: () -> Unit = {},
-    onCartClick: () -> Unit = {},
 ) {
-    val navController = rememberNavController()
+//    val navController = rememberNavController()
     val userName = "John Doe"
     val userEmail = "johndoe@example.com"
     val profileImage = R.drawable.profile_ic // Use your profile picture resource
@@ -74,7 +72,7 @@ fun ProfileScreen(
         ProfileSection(
             title = "Go to Cart",
             icon = Icons.Filled.ShoppingCart,
-            onClick = { onCartClick() }
+            onClick = { }
         )
 
         // Profile Edit Section
@@ -125,7 +123,7 @@ fun ProfileScreen(
 
         // Logout Button
         Button(
-            onClick = { onLogout() },
+            onClick = {  },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
         ) {

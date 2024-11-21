@@ -108,15 +108,7 @@ fun AppNavigation() {
             FavoriteScreen()
         }
         composable<Screen.Profile> {
-            ProfileScreen(
-                onLogout = {
-                    navController.popBackStack()
-                    navController.navigate(Screen.Welcome)
-                },
-                onCartClick = {
-                    navController.navigate(Screen.Cart)
-                }
-            )
+            ProfileScreen()
         }
         composable<Screen.ItemDetail> {
             ItemDetailScreen()
