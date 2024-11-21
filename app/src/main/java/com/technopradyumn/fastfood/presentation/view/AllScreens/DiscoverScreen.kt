@@ -81,7 +81,7 @@ fun DiscoverScreen() {
                     )
                     Text(
                         text = location,
-                        fontSize = 12.sp,
+                        fontSize = 8.sp,
                         color = Color.Gray
                     )
 

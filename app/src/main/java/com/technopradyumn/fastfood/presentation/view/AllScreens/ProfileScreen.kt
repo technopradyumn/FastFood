@@ -100,14 +100,14 @@ fun ProfileScreen(
         ProfileSection(
             title = "Payment Methods",
             icon = Icons.Filled.Payment,
-            onClick = {  } // Navigate to Payment Methods Screen
+            onClick = { } // Navigate to Payment Methods Screen
         )
 
         // Notifications Section
         ProfileSection(
             title = "Notifications",
             icon = Icons.Filled.Notifications,
-            onClick = {  } // Navigate to Notifications Screen
+            onClick = { } // Navigate to Notifications Screen
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -116,14 +116,14 @@ fun ProfileScreen(
         ProfileSection(
             title = "Settings",
             icon = Icons.Filled.Settings,
-            onClick = {  }
+            onClick = { }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Logout Button
         Button(
-            onClick = {  },
+            onClick = { },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
         ) {
@@ -156,32 +156,40 @@ fun ProfileSection(
     onClick: () -> Unit
 ) {
     Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFECECEC)),
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp)
-            .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFECECEC)) // Light gray background for sections
+
     ) {
-        Row(
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = "$title Icon",
-                modifier = Modifier.size(24.dp),
-                tint = Color.Black
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
-            )
+                .fillMaxSize()
+                .clickable {
+                    onClick()
+                }
+        ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "$title Icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Black
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+            }
         }
     }
 }

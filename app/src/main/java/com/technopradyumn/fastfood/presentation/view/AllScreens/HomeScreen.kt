@@ -97,7 +97,7 @@ fun BottomNavigationBar(
             .height(105.dp)
             .padding(16.dp)
             .background(
-                color = Color.White.copy(alpha = 0.9f),
+                color = Color(0xFFFFE0B2).copy(alpha = 0.9f),
                 shape = RoundedCornerShape(24.dp)
             )
             .blur(16.dp)
