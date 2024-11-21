@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "513575654850",
+    "firebase_url": "https://aquasense-49899-default-rtdb.firebaseio.com",
+    "project_id": "aquasense-49899",
+    "storage_bucket": "aquasense-49899.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513575654850:android:6d298c4d17fec70666b25b",
+        "android_client_info": {
+          "package_name": "com.technopradyumn.fastfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513575654850-n2efoumae86gd02ipd1973ica39g4ene.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCosNVYqB5ylwkcbMUsMBbRJ5CCj2uHvvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513575654850-n2efoumae86gd02ipd1973ica39g4ene.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

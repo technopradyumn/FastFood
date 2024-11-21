@@ -16,7 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -26,17 +26,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.technopradyumn.fastfood.R
+import com.technopradyumn.fastfood.data.model.FoodItem
+import com.technopradyumn.fastfood.utils.SectionHeader
 
 @Composable
 fun DiscoverScreen() {
     var location by remember { mutableStateOf("") }
-    var categories by remember { mutableStateOf<List<String>>(emptyList()) }
-    var bestSellers by remember { mutableStateOf<List<String>>(emptyList()) }
-    var popularItems by remember { mutableStateOf<List<String>>(emptyList()) }
+    var categories by remember { mutableStateOf(emptyList<FoodItem>()) }
+    var bestSellers by remember { mutableStateOf(emptyList<FoodItem>()) }
+    var popularItems by remember { mutableStateOf(emptyList<FoodItem>()) }
 
     val context = LocalContext.current
 
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         location = getCurrentLocation(context)
         categories = fetchCategories()
         bestSellers = fetchBestSellers()
@@ -48,7 +50,7 @@ fun DiscoverScreen() {
             .fillMaxSize()
             .padding(top = 32.dp, start = 16.dp, end = 16.dp)
     ) {
-        // Header Row with Location and Logo
+        // Header Section
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -57,10 +59,7 @@ fun DiscoverScreen() {
                 Box(
                     modifier = Modifier
                         .size(32.dp)
-                        .background(
-                            color = Color(0xFFFFA500),
-                            shape = CircleShape
-                        ),
+                        .background(color = Color(0xFFFFA500), shape = CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -73,46 +72,59 @@ fun DiscoverScreen() {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Text(
-                    text = "Home,",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
-                )
-                Text(
-                    text = location,
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                IconButton(onClick = { /* Handle Menu Click */ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.arrow_bottom),
-                        contentDescription = "Menu",
-                        tint = Color.Black,
-                        modifier = Modifier.size(24.dp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "Home,",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = Color.Black
                     )
+                    Text(
+                        text = location,
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    IconButton(onClick = { }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.arrow_bottom),
+                            contentDescription = "Menu",
+                            tint = Color.Black,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
             }
-
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         // Carousel Section
         item {
-            val pagerState = rememberPagerState { 5 }
-            Box(modifier = Modifier.fillMaxWidth()) {
+            val imageResources = listOf(
+                R.drawable.welcome_bg,
+                R.drawable.welcome_bg,
+                R.drawable.welcome_bg
+            )
+
+            val pagerState = rememberPagerState(initialPage = 0) {
+                imageResources.size
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(color = Color.Transparent, shape = RoundedCornerShape(16.dp))
+            ) {
                 HorizontalPager(
                     state = pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
+                    modifier = Modifier.fillMaxSize()
                 ) { page ->
                     Image(
-                        painter = painterResource(id = R.drawable.app_logo),
-                        contentDescription = "Carousel Image $page",
+                        painter = painterResource(id = imageResources[page]),
+                        contentDescription = "Carousel Image ${page + 1}",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -129,7 +141,33 @@ fun DiscoverScreen() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(categories) { category ->
-                    CategoryItem(category)
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .background(color = Color.White, shape = RoundedCornerShape(16.dp))
+                            .padding(8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.SpaceBetween,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(id = category.imageRes),
+                                contentDescription = "${category.name} Image",
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color.White),
+                                contentScale = ContentScale.Crop,
+                            )
+                            Text(
+                                text = category.name,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -137,13 +175,13 @@ fun DiscoverScreen() {
 
         // Best Sellers Section
         item {
-            SectionHeader(title = "Best Seller Food", showButton = true)
+            SectionHeader(title = "Best Seller Food")
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(bestSellers) { item ->
-                    FoodItemCard(item)
+                    FoodCard(item)
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -151,78 +189,29 @@ fun DiscoverScreen() {
 
         // Popular Items Section
         item {
-            SectionHeader(title = "Popular Items", showButton = true)
+            SectionHeader(title = "Popular Items")
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(popularItems) { item ->
-                    FoodItemCard(item)
+                    FoodCard(item)
                 }
             }
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
-    }
-}
-
-
-@Composable
-fun SectionHeader(title: String, showButton: Boolean = false) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = title,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            color = Color.Black
-        )
-        if (showButton) {
-            FilledTonalButton(
-                onClick = { /* Handle View All */ },
-                colors = ButtonDefaults.filledTonalButtonColors(
-                    containerColor = Color(0xFFFFA500).copy(0.2f), // Orange background
-                    contentColor = Color(0xFFFFA500) // White text
-                ),
-                modifier = Modifier
-                    .height(32.dp)
-                    .padding(start = 8.dp, end = 8.dp)
-            ) {
-                Text(text = "See All")
-            }
-
+        item{
+            Spacer(modifier = Modifier.height(64.dp))
         }
     }
 }
 
 @Composable
-fun CategoryItem(category: String) {
-    Box(
-        modifier = Modifier
-            .size(100.dp)
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Color.LightGray, Color.White)
-                ),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = category, fontWeight = FontWeight.Medium, fontSize = 14.sp)
-    }
-}
-
-@Composable
-fun FoodItemCard(item: String) {
+fun FoodCard(item: FoodItem) {
     Box(
         modifier = Modifier
             .size(150.dp)
-            .background(Color.LightGray, shape = RoundedCornerShape(16.dp))
+            .background(Color.White, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Column(
@@ -230,57 +219,56 @@ fun FoodItemCard(item: String) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.app_logo),
-                contentDescription = "Food Image",
-                modifier = Modifier.size(100.dp),
+                painter = painterResource(id = item.imageRes),
+                contentDescription = "${item.name} Image",
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White),
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = item,
+                text = item.name,
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
                 color = Color.Black
             )
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "$12.99",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = Color(0xFFFFA500)
-                )
-                IconButton(onClick = { /* Add to Cart */ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.welcome_bg),
-                        contentDescription = "Add to Cart",
-                        tint = Color.Black
-                    )
-                }
-            }
         }
     }
 }
 
-// Helper functions for location and mock data
+// Helper Functions
 fun getCurrentLocation(context: Context): String {
     val geocoder = Geocoder(context)
     val addresses = geocoder.getFromLocation(37.7749, -122.4194, 1)
     return addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown Location"
 }
 
-fun fetchCategories(): List<String> {
-    return listOf("Pizza", "Burger", "Pasta", "Salads", "Desserts")
-}
+fun fetchCategories(): List<FoodItem> = listOf(
+    FoodItem(name = "Pizza", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Burger", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Pasta", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Burger", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Pasta", imageRes = R.drawable.welcome_bg)
+)
 
-fun fetchBestSellers(): List<String> {
-    return listOf("Burger King", "Pizza Hut", "Domino's", "Subway", "KFC")
-}
+fun fetchBestSellers(): List<FoodItem> = listOf(
+    FoodItem(name = "Burger King", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Pizza Hut", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Burger King", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Pizza Hut", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Burger King", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Pizza Hut", imageRes = R.drawable.welcome_bg)
+)
 
-fun fetchPopularItems(): List<String> {
-    return listOf("Tacos", "Fried Chicken", "Ice Cream", "Steak", "Sushi")
-}
+fun fetchPopularItems(): List<FoodItem> = listOf(
+    FoodItem(name = "Tacos", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Fried Chicken", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Tacos", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Fried Chicken", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Tacos", imageRes = R.drawable.welcome_bg),
+    FoodItem(name = "Fried Chicken", imageRes = R.drawable.welcome_bg)
+)
 
 @Preview(showBackground = true)
 @Composable

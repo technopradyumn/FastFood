@@ -6,6 +6,9 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
     id("kotlin-parcelize")
     id("com.google.devtools.ksp") version "2.0.20-1.0.24"
+
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -82,6 +85,10 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.5.0-beta01")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("androidx.credentials:credentials-play-services-auth:1.5.0-beta01")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 
 }
