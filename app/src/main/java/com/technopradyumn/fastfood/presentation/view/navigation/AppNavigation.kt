@@ -93,7 +93,7 @@ fun AppNavigation() {
             AdminScreen()
         }
         composable<Screen.Home> {
-            HomeScreen(navController)
+            HomeScreen()
         }
         composable<Screen.Discover> {
             DiscoverScreen()
